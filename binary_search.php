@@ -27,6 +27,6 @@ function binary_search($nums, $target)
     return -1;
 }
 
-$nums = [1,2,4,6];
-$target = 6;
+$nums = [1,2,3,4,5];
+$target = 2;
 echo binary_search($nums, $target);
