@@ -2,25 +2,47 @@
 
 
 /**
+ * 18. 4Sum
+ * https://leetcode.com/problems/4sum/
+ *
  * @param Integer[] $nums
  * @param Integer $target
  * @return Integer[][]
  */
 function fourSum($nums, $target) {
     $res = [];
-//    sort($nums);
+    if (count($nums) < 4) {
+        return $res;
+    }
+
+    if (count($nums) == 4 && array_sum($nums) == $target) {
+        $res[] = $nums;
+        return $res;
+    }
+
+    $map = [];
+    sort($nums);
     for($i = 0; $i < count($nums); $i++){
-        for($j = 1+$i; $j < count($nums); $j++){
-            for($k = 2+($j-1); $k < count($nums); $k++){
-                for($l= 3+($k-2); $l < count($nums); $l++){
-                    if($nums[$i]+$nums[$j]+$nums[$k]+$nums[$l] == $target) {
-                        $arr = [$nums[$i], $nums[$j], $nums[$k], $nums[$l]];
-                        sort($arr);
-                        if(array_search($arr, $res) === FALSE)
-                        {
-                            array_push($res, $arr);
-                        }
+        for($j = $i+1; $j < count($nums); $j++){
+            $low = $j+1;
+            $high = count($nums)-1;
+            if($low >= $high){
+                break;
+            }
+            while ($low < $high){
+                $sum = $nums[$i] + $nums[$j] + $nums[$low] + $nums[$high];
+                if($target < $sum){
+                    $high--;
+                }elseif($target > $sum){
+                    $low++;
+                }else{
+                    $arr = [$nums[$i], $nums[$j], $nums[$low++], $nums[$high--]];
+                    $key =  implode($arr);
+                    if(!array_key_exists($key, $map)){
+                        $map[$key] = null;
+                        $res[] = $arr;
                     }
+                    break;
                 }
             }
         }
@@ -28,6 +50,6 @@ function fourSum($nums, $target) {
     return $res;
 }
 
-$nums = [-500,-499,-496,-467,-467,-465,-461,-460,-456,-456,-447,-426,-425,-401,-377,-367,-344,-338,-332,-329,-328,-294,-281,-262,-256,-224,-196,-192,-171,-161,-151,-138,-130,-109,-109,-107,-104,-101,-97,-96,-90,-78,-76,-70,-28,-23,-4,30,39,46,60,80,97,120,172,183,194,197,206,238,242,243,252,303,338,341,349,362,366,367,372,393,400,403,406,411,416,454,457,460,497];
-$target = -1963;
+$nums = [-3,-2,-1,0,0,1,2,3];
+$target = 0;
 print_r(fourSum($nums, $target));
