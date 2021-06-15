@@ -10,23 +10,31 @@ function groupAnagrams($strs) {
     $map_len = 1;
     foreach ($strs as $str){
         $chars = str_split($str);
-        sort($chars);
-        $sorted = implode($chars);
+        $arr  = array_fill(0, 26, 0);
+        $key = '';
 
-        if (!array_key_exists($sorted, $map)){
-            $map[$sorted] = $map_len;
-            $res[$map[$sorted]][] = $str;
+        foreach ($chars as $char){
+            $arr[ord($char)-97]++;
+        }
+
+        foreach ($arr as $value){
+            $key .= chr($value);
+        }
+
+        if (!array_key_exists($key, $map)){
+            $map[$key] = $map_len;
+            $res[$map[$key]][] = $str;
             $map_len++;
             continue;
         }
 
-        $res[$map[$sorted]][] = $str;
+        $res[$map[$key]][] = $str;
     }
 
     return $res;
 }
 
 
-$strs = ["eat","tea","tan","ate","nat","bat"];
+$strs = ["bdddddddddd","bbbbbbbbbbc"];
 
 print_r(groupAnagrams($strs));

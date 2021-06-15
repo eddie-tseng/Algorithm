@@ -29,7 +29,7 @@ function fourSum($nums, $target) {
         }
         for($j = $i+1; $j < count($nums); $j++){
             //排除重複
-            if($j != i+1 && $nums[$j] == $nums[$j-1])
+            if($j != $i+1 && $nums[$j] == $nums[$j-1])
             {
                 continue;
             }
@@ -63,6 +63,6 @@ function fourSum($nums, $target) {
     return $res;
 }
 
-$nums = [2,2,2,2,2];
-$target = 8;
+$nums = [1,0,-1,0,-2,2];
+$target = 0;
 print_r(fourSum($nums, $target));
