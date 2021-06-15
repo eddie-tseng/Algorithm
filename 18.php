@@ -20,15 +20,22 @@ function fourSum($nums, $target) {
         return $res;
     }
 
-    $map = [];
     sort($nums);
     for($i = 0; $i < count($nums); $i++){
+        //排除重複
+        if($i != 0 && $nums[$i] == $nums[$i-1])
+        {
+            continue;
+        }
         for($j = $i+1; $j < count($nums); $j++){
+            //排除重複
+            if($j != i+1 && $nums[$j] == $nums[$j-1])
+            {
+                continue;
+            }
             $low = $j+1;
             $high = count($nums)-1;
-            if($low >= $high){
-                break;
-            }
+
             while ($low < $high){
                 $sum = $nums[$i] + $nums[$j] + $nums[$low] + $nums[$high];
                 if($target < $sum){
@@ -37,12 +44,18 @@ function fourSum($nums, $target) {
                     $low++;
                 }else{
                     $arr = [$nums[$i], $nums[$j], $nums[$low++], $nums[$high--]];
-                    $key =  implode($arr);
-                    if(!array_key_exists($key, $map)){
-                        $map[$key] = null;
-                        $res[] = $arr;
+                    $res[] = $arr;
+
+                    //排除重複
+                    while($low < $high && $nums[$low] == $nums[$low-1])
+                    {
+                        $low++;
                     }
-                    break;
+                    //排除重複
+                    while($low < $high && $nums[$high] == $nums[$high+1])
+                    {
+                        $high--;
+                    }
                 }
             }
         }
@@ -50,6 +63,6 @@ function fourSum($nums, $target) {
     return $res;
 }
 
-$nums = [-3,-2,-1,0,0,1,2,3];
-$target = 0;
+$nums = [2,2,2,2,2];
+$target = 8;
 print_r(fourSum($nums, $target));
