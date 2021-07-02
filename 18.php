@@ -63,6 +63,89 @@ function fourSum($nums, $target) {
     return $res;
 }
 
+# solution2 recursion
+class Solution
+{
+    public $res = [];
+
+    function fourSum_2($nums, $target)
+    {
+
+        if (count($nums) < 4)
+        {
+            return $this->res;
+        }
+
+        if (count($nums) == 4 && array_sum($nums) == $target)
+        {
+            $this->res[] = $nums;
+
+            return $this->res;
+        }
+
+        sort($nums);
+        $this->nSum($nums, 4, 0, $target, []);
+
+        return $this->res;
+    }
+
+    function nSum($nums, $n, $start, $target, $sub_res)
+    {
+        if ($n == 2)
+        {
+            foreach ($this->TwoSum($nums, $start, $target) as $arr){
+                $this->res[]  = array_merge($sub_res, $arr);
+            }
+        }
+        else
+        {
+            for ($i = $start; $i < count($nums) - 1; $i++)
+            {
+                if ($i != $start && $nums[$i] == $nums[$i - 1])
+                {
+                    continue;
+                }
+
+
+                $sub_res[] = $nums[$i];
+                $this->nSum($nums, $n - 1, $i + 1, $target - $nums[$i], $sub_res);
+                echo $target - $nums[$i];
+                print_r($sub_res);
+
+                array_pop($sub_res);
+            }
+        }
+
+    }
+
+    function TwoSum($nums, $start, $target)
+    {
+        $l = $start;
+        $r = count($nums) - 1;
+        $sub_res = [];
+
+        while ($l < $r)
+        {
+            if (($nums[$l] + $nums[$r]) < $target){
+                $l++;
+            } elseif (($nums[$l] + $nums[$r]) > $target){
+                $r--;
+            }
+            else {
+                $sub_res[] = [$nums[$l++], $nums[$r--]];
+
+                while ($l < $r && $nums[$l] == $nums[$l - 1]) $l++;
+
+                while ($l < $r && $nums[$r] == $nums[$r + 1]) $r--;
+            }
+        }
+
+        return $sub_res;
+    }
+}
+
 $nums = [1,0,-1,0,-2,2];
 $target = 0;
-print_r(fourSum($nums, $target));
+$s = new Solution();
+$s->fourSum_2($nums, $target);
+print_r($s->res);
